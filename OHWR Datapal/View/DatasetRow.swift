@@ -11,7 +11,7 @@ struct DatasetRow: View {
     let dataset: Dataset
     
     var body: some View {
-        Text(dataset.name)
+        Label(dataset.name, systemImage: "doc.on.doc")
     }
 }
 

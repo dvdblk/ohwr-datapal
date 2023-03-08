@@ -8,6 +8,49 @@
 import Foundation
 import PencilKit
 
+struct StrokePoint: Hashable {
+    let location: CGPoint
+    let timeOffset: TimeInterval
+    //let size: CGSize
+    let opacity: CGFloat
+    let force: CGFloat
+    let azimuth: CGFloat
+    let altitude: CGFloat
+}
+
+extension CGPoint: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(x)
+        hasher.combine(y)
+    }
+}
+
+extension CGSize: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(width)
+        hasher.combine(height)
+    }
+}
+
+struct Stroke: Hashable {
+    var points: [StrokePoint]
+    
+    var path: PKStrokePath {
+        let pkStrokePoints = points.map {
+            PKStrokePoint(
+                location: $0.location,
+                timeOffset: $0.timeOffset,
+                size: .zero,
+                opacity: $0.opacity,
+                force: $0.force,
+                azimuth: $0.azimuth,
+                altitude: $0.altitude
+            )
+        }
+        return PKStrokePath(controlPoints: pkStrokePoints, creationDate: Date())
+    }
+}
+
 /// Represent a non-generic dataset of strokes and labels.
 /// Multi-stroke
 struct Dataset: Identifiable {
@@ -15,32 +58,25 @@ struct Dataset: Identifiable {
     /// Name of the dataset
     let name: String
     /// Dictionary of label: [stroke]
-    var data: [String: [PKStroke]]
-    
+    var data: [String: [Stroke]]
+        
     var labels: [String] { Array(data.keys) }
     
     struct Data {
-        var name: String = "New dataset"
-        var data: [String: [PKStroke]] = [:]
+        var name: String = ""
+        var data: [String: [Stroke]] = [:]
+        
+        var isValidName: Bool {
+            return
+                name.count < 64 &&
+                !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        }
     }
 }
 
 extension Dataset {
-    private static let ink = PKInk(.pen, color: PKInkingTool.convertColor(.white, from: .light, to: .dark))
-    
     static let sampleData: [Dataset] = [
-        Dataset(name: "Squares and triangles", data: ["square": [PKStroke(ink: ink, path: PKStrokePath())], "triangle": [PKStroke(ink: ink, path: PKStrokePath())]]),
+        Dataset(name: "Squares and triangles", data: ["square": [Stroke(points: [])], "triangle": [Stroke(points: [])]]),
         Dataset(name: "Empty dataset", data: [:])
     ]
-}
-
-extension Dataset: Equatable, Hashable {
-    static func == (lhs: Dataset, rhs: Dataset) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(name)
-    }
 }

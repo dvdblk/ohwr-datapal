@@ -7,14 +7,79 @@
 
 import SwiftUI
 
+
+
+class DatasetFileManager {
+    
+    func loadJSON(result: Result<[URL], Error>) {
+        do {
+            guard
+                let selectedFileURL = try? result.get().first,
+                selectedFileURL.startAccessingSecurityScopedResource()
+            else { return }
+            let data = try Data(contentsOf: selectedFileURL)
+            let decoder = JSONDecoder()
+            
+            print(data)
+            selectedFileURL.stopAccessingSecurityScopedResource()
+        } catch {
+            print(error)
+        }
+    }
+}
+
 struct NewDatasetView: View {
+    @ObservedObject var newDatasetContext: NewDatasetContext
+    @FocusState private var isNameFocused: Bool
+    @State private var isPresentingImportMenu = false
+    
+    var labels: [String] {
+        Array(newDatasetContext.datasetData.data.keys)
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Form {
+                Section("Dataset Metadata") {
+                    TextField("Dataset name", text: $newDatasetContext.datasetData.name)
+                        .focused($isNameFocused)
+                }
+                Section {
+                    Button {
+                        isPresentingImportMenu = true
+                    } label: {
+                        Label("Import from JSON", systemImage: "square.and.arrow.down")
+                    }
+                    .fileImporter(
+                        isPresented: $isPresentingImportMenu,
+                        allowedContentTypes: [.json],
+                        allowsMultipleSelection: false
+                    ) { result in
+                        DatasetFileManager().loadJSON(result: result)
+                    }
+                    if !newDatasetContext.datasetData.data.isEmpty {
+                        List(labels, id: \.self) { label in
+                            Text(label)
+                        }
+                    }
+                } header: {
+                    Text("Data")
+                } footer: {
+                    Text("Importing data is optional. Format of the JSON data can be found [here](https://github.com/dvdblk/ohwr-datapal).")
+                }
+            }
+        }
+        .navigationTitle("New dataset")
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                isNameFocused = true
+            }
+        }
     }
 }
 
 struct NewDatasetView_Previews: PreviewProvider {
     static var previews: some View {
-        NewDatasetView()
+        NewDatasetView(newDatasetContext: NewDatasetContext())
     }
 }

@@ -16,6 +16,9 @@
 		8905FC5A29B7651900EFA6EE /* DatasetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8905FC5929B7651900EFA6EE /* DatasetRow.swift */; };
 		8905FC5C29B76CA100EFA6EE /* EmptyDatasetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8905FC5B29B76CA100EFA6EE /* EmptyDatasetsView.swift */; };
 		8905FC5E29B780B900EFA6EE /* NewDatasetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8905FC5D29B780B900EFA6EE /* NewDatasetView.swift */; };
+		8905FC6029B7AA2B00EFA6EE /* SampleCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8905FC5F29B7AA2B00EFA6EE /* SampleCreationView.swift */; };
+		8905FC6329B7C5E200EFA6EE /* NewDatasetContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8905FC6229B7C5E200EFA6EE /* NewDatasetContext.swift */; };
+		8905FC6729B7FB6200EFA6EE /* UIDevice+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8905FC6629B7FB6200EFA6EE /* UIDevice+Interface.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +32,9 @@
 		8905FC5929B7651900EFA6EE /* DatasetRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatasetRow.swift; sourceTree = "<group>"; };
 		8905FC5B29B76CA100EFA6EE /* EmptyDatasetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyDatasetsView.swift; sourceTree = "<group>"; };
 		8905FC5D29B780B900EFA6EE /* NewDatasetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDatasetView.swift; sourceTree = "<group>"; };
+		8905FC5F29B7AA2B00EFA6EE /* SampleCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleCreationView.swift; sourceTree = "<group>"; };
+		8905FC6229B7C5E200EFA6EE /* NewDatasetContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDatasetContext.swift; sourceTree = "<group>"; };
+		8905FC6629B7FB6200EFA6EE /* UIDevice+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Interface.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +70,7 @@
 				8905FC4329B75DB000EFA6EE /* OHWR_DatapalApp.swift */,
 				8905FC5429B7625800EFA6EE /* Model */,
 				8905FC5129B7607500EFA6EE /* View */,
+				8905FC6529B7FB5500EFA6EE /* Extension */,
 				8905FC4729B75DB200EFA6EE /* Assets.xcassets */,
 				8905FC4929B75DB200EFA6EE /* Preview Content */,
 			);
@@ -81,11 +88,12 @@
 		8905FC5129B7607500EFA6EE /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8905FC5F29B7AA2B00EFA6EE /* SampleCreationView.swift */,
 				8905FC4529B75DB000EFA6EE /* DatasetListView.swift */,
 				8905FC5729B764E600EFA6EE /* DatasetDetailView.swift */,
+				8905FC5D29B780B900EFA6EE /* NewDatasetView.swift */,
 				8905FC5B29B76CA100EFA6EE /* EmptyDatasetsView.swift */,
 				8905FC5929B7651900EFA6EE /* DatasetRow.swift */,
-				8905FC5D29B780B900EFA6EE /* NewDatasetView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -94,8 +102,17 @@
 			isa = PBXGroup;
 			children = (
 				8905FC5529B7626200EFA6EE /* Dataset.swift */,
+				8905FC6229B7C5E200EFA6EE /* NewDatasetContext.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		8905FC6529B7FB5500EFA6EE /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				8905FC6629B7FB6200EFA6EE /* UIDevice+Interface.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,9 +187,12 @@
 			files = (
 				8905FC4629B75DB000EFA6EE /* DatasetListView.swift in Sources */,
 				8905FC5C29B76CA100EFA6EE /* EmptyDatasetsView.swift in Sources */,
+				8905FC6329B7C5E200EFA6EE /* NewDatasetContext.swift in Sources */,
 				8905FC5E29B780B900EFA6EE /* NewDatasetView.swift in Sources */,
 				8905FC5829B764E600EFA6EE /* DatasetDetailView.swift in Sources */,
+				8905FC6729B7FB6200EFA6EE /* UIDevice+Interface.swift in Sources */,
 				8905FC4429B75DB000EFA6EE /* OHWR_DatapalApp.swift in Sources */,
+				8905FC6029B7AA2B00EFA6EE /* SampleCreationView.swift in Sources */,
 				8905FC5629B7626200EFA6EE /* Dataset.swift in Sources */,
 				8905FC5A29B7651900EFA6EE /* DatasetRow.swift in Sources */,
 			);

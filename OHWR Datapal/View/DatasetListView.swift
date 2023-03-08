@@ -10,23 +10,28 @@ import SwiftUI
 struct DatasetListView: View {
     
     @Binding var datasets: [Dataset]
-    @Binding var selectedDataset: Dataset?
+    // Use selection ID instead of dataset to avoid Hashable conformance
+    @Binding var selectedDatasetId: UUID?
     @Binding var isPresentingNewDatasetView: Bool
-    @State private var newDatasetData = Dataset.Data()
     
     @ViewBuilder
     var listView: some View {
-        if datasets.isEmpty {
-            EmptyDatasetsView(isPresentingNewDatasetView: $isPresentingNewDatasetView)
-        } else {
-            List(selection: $selectedDataset) {
-                ForEach($datasets) { $dataset in
-                    NavigationLink(destination: DatasetDetailView(dataset: $dataset)) {
-                        DatasetRow(dataset: dataset)
-                    }.tag(dataset)
+        VStack(spacing: 0) {
+            if datasets.isEmpty {
+                EmptyDatasetsView(isPresentingNewDatasetView: $isPresentingNewDatasetView)
+            } else {
+                List(selection: $selectedDatasetId) {
+                    ForEach($datasets.sorted(by: { $0.wrappedValue.name < $1.wrappedValue.name })) { $dataset in
+                        DatasetRow(dataset: dataset).tag(dataset.id)
+                    }
                 }
             }
+            
+            Divider()
+            Text("🌟 this app on [GitHub](https://github.com/dvdblk/ohwr-datapal)")
+                .padding()
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 
     var body: some View {
@@ -36,57 +41,39 @@ struct DatasetListView: View {
             Button(action: {
                 isPresentingNewDatasetView = true
             }) {
-                Image(systemName: "plus.circle")
+                Image(systemName: "doc.badge.plus")
             }
             .accessibilityLabel("New Dataset")
-        }
-        .sheet(isPresented: $isPresentingNewDatasetView) {
-            NavigationView {
-                NewDatasetView()
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Dismiss") {
-                                isPresentingNewDatasetView = false
-                                newDatasetData = Dataset.Data()
-                            }
-                        }
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Add") {
-                                let newDataset = Dataset(
-                                    name: newDatasetData.name,
-                                    data: newDatasetData.data
-                                )
-                                datasets.append(newDataset)
-                                isPresentingNewDatasetView = false
-                                newDatasetData = Dataset.Data()
-                            }
-                        }
-                    }
-            }
         }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
+    @State private static var selectedDatasetId: UUID? = nil
+    
     static var previews: some View {
-        NavigationView {
-            DatasetListView(datasets: .constant(Dataset.sampleData), selectedDataset: .constant(Dataset.sampleData[0]), isPresentingNewDatasetView: .constant(false))
+        NavigationSplitView {
+            DatasetListView(datasets: .constant(Dataset.sampleData), selectedDatasetId: $selectedDatasetId, isPresentingNewDatasetView: .constant(false))
+        } content: {
+            DatasetDetailView(dataset: .constant(Dataset.sampleData[0]))
+        } detail: {
+            SampleCreationView()
         }
             .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (4th generation)"))
             .previewDisplayName("iPad Landscape")
             .previewInterfaceOrientation(.landscapeLeft)
-        
+
         NavigationView {
-            DatasetListView(datasets: .constant([]), selectedDataset: .constant(nil), isPresentingNewDatasetView: .constant(false))
+            DatasetListView(datasets: .constant([]), selectedDatasetId: $selectedDatasetId, isPresentingNewDatasetView: .constant(false))
         }
             .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (4th generation)"))
             .previewDisplayName("iPad Portrait")
-        
+
         NavigationView {
-            DatasetListView(datasets: .constant(Dataset.sampleData), selectedDataset: .constant(nil), isPresentingNewDatasetView: .constant(false))
+            DatasetListView(datasets: .constant(Dataset.sampleData), selectedDatasetId: $selectedDatasetId,  isPresentingNewDatasetView: .constant(false))
         }
             .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
             .previewDisplayName("iPhone")
-            
+
     }
 }

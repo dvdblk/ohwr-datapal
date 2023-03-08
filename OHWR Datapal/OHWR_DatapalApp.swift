@@ -10,30 +10,73 @@ import SwiftUI
 @main
 struct OHWR_DatapalApp: App {
     @State private var datasets = [Dataset]()
-    @State private var selectedDataset: Dataset? = nil
+    @State private var selectedDatasetId: UUID? = nil
     @State private var isPresentingNewDatasetView = false
+    @State private var splitViewColumnVisibility: NavigationSplitViewVisibility = .all
+    @StateObject private var newDatasetContext = NewDatasetContext()
     
     var body: some Scene {
         WindowGroup {
-            NavigationView {
-                DatasetListView(datasets: $datasets, selectedDataset: $selectedDataset, isPresentingNewDatasetView: $isPresentingNewDatasetView)
-                if let selection = selectedDataset {
-                    DatasetDetailView(dataset: .constant(selection))
-                } else {
+            Group {
+                if UIDevice.isPad && datasets.isEmpty {
                     EmptyDatasetsView(isPresentingNewDatasetView: $isPresentingNewDatasetView)
+                } else {
+                    NavigationSplitView(columnVisibility: $splitViewColumnVisibility) {
+                        DatasetListView(
+                            datasets: $datasets,
+                            selectedDatasetId: $selectedDatasetId,
+                            isPresentingNewDatasetView: $isPresentingNewDatasetView
+                        )
+                    } content: {
+                        VStack {
+                            if let selectedDatasetId = selectedDatasetId, let datasetIndex = datasets.firstIndex(where: { $0.id == selectedDatasetId }) {
+                                DatasetDetailView(dataset: $datasets[datasetIndex])
+                            } else {
+                                Text("Select dataset from Sidebar")
+                            }
+                        }
+                    } detail: {
+                        Text("Select label from dataset")
+                    }
+                    .onAppear {
+                        // Select the first dataset if device is iPad and datasets are not empty
+                        if UIDevice.isPad, !datasets.isEmpty {
+                            withAnimation {
+                                selectedDatasetId = datasets[0].id
+                            }
+                        }
+                    }
                 }
             }
-            .onAppear {
-                // Select the first dataset if device is iPad and datasets are not empty
-                if UIDevice.current.userInterfaceIdiom == .pad, !datasets.isEmpty {
-                    selectedDataset = datasets[0]
-                }
-            }
-            .onChange(of: datasets) { newDatasets in
-                if selectedDataset == nil, UIDevice.current.userInterfaceIdiom == .pad, !newDatasets.isEmpty {
-                    selectedDataset = newDatasets[0]
+            .sheet(isPresented: $isPresentingNewDatasetView) {
+                NavigationView {
+                    NewDatasetView(newDatasetContext: newDatasetContext)
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button("Dismiss") {
+                                    isPresentingNewDatasetView = false
+                                    newDatasetContext.resetDatasetData()
+                                }
+                            }
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Add") {
+                                    let newDataset = newDatasetContext.dataset
+                                    datasets.append(newDataset)
+                                    isPresentingNewDatasetView = false
+                                    newDatasetContext.resetDatasetData()
+                                    if UIDevice.isPad && datasets.count > 1 {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                                            selectedDatasetId = newDataset.id
+                                        }
+                                    }
+                                }
+                                .disabled(!newDatasetContext.isValidName)
+                            }
+                        }
+                        .interactiveDismissDisabled()
                 }
             }
         }
+
     }
 }
