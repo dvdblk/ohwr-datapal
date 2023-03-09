@@ -19,6 +19,11 @@
 		8905FC6029B7AA2B00EFA6EE /* SampleCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8905FC5F29B7AA2B00EFA6EE /* SampleCreationView.swift */; };
 		8905FC6329B7C5E200EFA6EE /* NewDatasetContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8905FC6229B7C5E200EFA6EE /* NewDatasetContext.swift */; };
 		8905FC6729B7FB6200EFA6EE /* UIDevice+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8905FC6629B7FB6200EFA6EE /* UIDevice+Interface.swift */; };
+		8994DB3229B94E01003A1EBA /* DatasetFileFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994DB3129B94E01003A1EBA /* DatasetFileFormat.swift */; };
+		8994DB3429BA07E1003A1EBA /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994DB3329BA07E1003A1EBA /* Stroke.swift */; };
+		8994DB3829BA0A36003A1EBA /* ColumnVisibilityBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994DB3729BA0A36003A1EBA /* ColumnVisibilityBarButton.swift */; };
+		8994DB3A29BA0E3E003A1EBA /* EmptyDatasetContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994DB3929BA0E3E003A1EBA /* EmptyDatasetContentView.swift */; };
+		8994DB3D29BA0E90003A1EBA /* EmptyDatasetDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994DB3C29BA0E90003A1EBA /* EmptyDatasetDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +40,11 @@
 		8905FC5F29B7AA2B00EFA6EE /* SampleCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleCreationView.swift; sourceTree = "<group>"; };
 		8905FC6229B7C5E200EFA6EE /* NewDatasetContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDatasetContext.swift; sourceTree = "<group>"; };
 		8905FC6629B7FB6200EFA6EE /* UIDevice+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Interface.swift"; sourceTree = "<group>"; };
+		8994DB3129B94E01003A1EBA /* DatasetFileFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatasetFileFormat.swift; sourceTree = "<group>"; };
+		8994DB3329BA07E1003A1EBA /* Stroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stroke.swift; sourceTree = "<group>"; };
+		8994DB3729BA0A36003A1EBA /* ColumnVisibilityBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnVisibilityBarButton.swift; sourceTree = "<group>"; };
+		8994DB3929BA0E3E003A1EBA /* EmptyDatasetContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyDatasetContentView.swift; sourceTree = "<group>"; };
+		8994DB3C29BA0E90003A1EBA /* EmptyDatasetDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyDatasetDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,8 +102,9 @@
 				8905FC4529B75DB000EFA6EE /* DatasetListView.swift */,
 				8905FC5729B764E600EFA6EE /* DatasetDetailView.swift */,
 				8905FC5D29B780B900EFA6EE /* NewDatasetView.swift */,
-				8905FC5B29B76CA100EFA6EE /* EmptyDatasetsView.swift */,
 				8905FC5929B7651900EFA6EE /* DatasetRow.swift */,
+				8994DB3729BA0A36003A1EBA /* ColumnVisibilityBarButton.swift */,
+				8994DB3B29BA0E44003A1EBA /* Empty */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -102,7 +113,9 @@
 			isa = PBXGroup;
 			children = (
 				8905FC5529B7626200EFA6EE /* Dataset.swift */,
+				8994DB3129B94E01003A1EBA /* DatasetFileFormat.swift */,
 				8905FC6229B7C5E200EFA6EE /* NewDatasetContext.swift */,
+				8994DB3329BA07E1003A1EBA /* Stroke.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -113,6 +126,16 @@
 				8905FC6629B7FB6200EFA6EE /* UIDevice+Interface.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		8994DB3B29BA0E44003A1EBA /* Empty */ = {
+			isa = PBXGroup;
+			children = (
+				8994DB3929BA0E3E003A1EBA /* EmptyDatasetContentView.swift */,
+				8905FC5B29B76CA100EFA6EE /* EmptyDatasetsView.swift */,
+				8994DB3C29BA0E90003A1EBA /* EmptyDatasetDetailView.swift */,
+			);
+			path = Empty;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -187,14 +210,19 @@
 			files = (
 				8905FC4629B75DB000EFA6EE /* DatasetListView.swift in Sources */,
 				8905FC5C29B76CA100EFA6EE /* EmptyDatasetsView.swift in Sources */,
+				8994DB3829BA0A36003A1EBA /* ColumnVisibilityBarButton.swift in Sources */,
 				8905FC6329B7C5E200EFA6EE /* NewDatasetContext.swift in Sources */,
 				8905FC5E29B780B900EFA6EE /* NewDatasetView.swift in Sources */,
+				8994DB3D29BA0E90003A1EBA /* EmptyDatasetDetailView.swift in Sources */,
 				8905FC5829B764E600EFA6EE /* DatasetDetailView.swift in Sources */,
 				8905FC6729B7FB6200EFA6EE /* UIDevice+Interface.swift in Sources */,
+				8994DB3229B94E01003A1EBA /* DatasetFileFormat.swift in Sources */,
+				8994DB3429BA07E1003A1EBA /* Stroke.swift in Sources */,
 				8905FC4429B75DB000EFA6EE /* OHWR_DatapalApp.swift in Sources */,
 				8905FC6029B7AA2B00EFA6EE /* SampleCreationView.swift in Sources */,
 				8905FC5629B7626200EFA6EE /* Dataset.swift in Sources */,
 				8905FC5A29B7651900EFA6EE /* DatasetRow.swift in Sources */,
+				8994DB3A29BA0E3E003A1EBA /* EmptyDatasetContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

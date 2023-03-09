@@ -9,11 +9,22 @@ import SwiftUI
 
 @main
 struct OHWR_DatapalApp: App {
-    @State private var datasets = [Dataset]()
+    // MARK: - Data
+    /// The array of datasets
+    @State private var datasets = Dataset.sampleData
+    /// Currently selected dataset
     @State private var selectedDatasetId: UUID? = nil
-    @State private var isPresentingNewDatasetView = false
-    @State private var splitViewColumnVisibility: NavigationSplitViewVisibility = .all
+    /// Currently selected label
+    @State private var selectedLabelId: String? = nil
+    /// Data for the dataset that should be created
     @StateObject private var newDatasetContext = NewDatasetContext()
+    
+    @State private var splitViewColumnVisibility: NavigationSplitViewVisibility = .all
+    @State private var isPresentingNewDatasetView = false
+    
+    func datasetIndex(with id: UUID?) -> Int? {
+        return datasets.firstIndex(where: { $0.id == id })
+    }
     
     var body: some Scene {
         WindowGroup {
@@ -28,15 +39,17 @@ struct OHWR_DatapalApp: App {
                             isPresentingNewDatasetView: $isPresentingNewDatasetView
                         )
                     } content: {
-                        VStack {
-                            if let selectedDatasetId = selectedDatasetId, let datasetIndex = datasets.firstIndex(where: { $0.id == selectedDatasetId }) {
-                                DatasetDetailView(dataset: $datasets[datasetIndex])
-                            } else {
-                                Text("Select dataset from Sidebar")
-                            }
+                        if let selectedDatasetId = selectedDatasetId, let datasetIndex = datasetIndex(with: selectedDatasetId) {
+                            DatasetDetailView(dataset: $datasets[datasetIndex], selectedLabelId: $selectedLabelId)
+                        } else {
+                            EmptyDatasetContentView()
                         }
                     } detail: {
-                        Text("Select label from dataset")
+                        if let selectedDatasetId = selectedDatasetId, let selectedLabelId = selectedLabelId, let datasetIndex = datasetIndex(with: selectedDatasetId) {
+                            SampleCreationView(label: selectedLabelId, dataset: $datasets[datasetIndex], splitViewColumnVisibility: $splitViewColumnVisibility)
+                        } else {
+                            EmptyDatasetDetailView()
+                        }
                     }
                     .onAppear {
                         // Select the first dataset if device is iPad and datasets are not empty
@@ -46,6 +59,18 @@ struct OHWR_DatapalApp: App {
                             }
                         }
                     }
+                }
+            }
+            .onChange(of: selectedDatasetId) { _ in
+                // Deselect detail view when dataset changes
+                selectedLabelId = nil
+            }
+            .onChange(of: selectedLabelId) { _ in
+                // Use double column when a label of a dataset is selected
+                if selectedLabelId == nil {
+                    splitViewColumnVisibility = .all
+                } else {
+                    splitViewColumnVisibility = .doubleColumn
                 }
             }
             .sheet(isPresented: $isPresentingNewDatasetView) {

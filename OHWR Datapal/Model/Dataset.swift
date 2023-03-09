@@ -6,59 +6,19 @@
 //
 
 import Foundation
-import PencilKit
-
-struct StrokePoint: Hashable {
-    let location: CGPoint
-    let timeOffset: TimeInterval
-    //let size: CGSize
-    let opacity: CGFloat
-    let force: CGFloat
-    let azimuth: CGFloat
-    let altitude: CGFloat
-}
-
-extension CGPoint: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(x)
-        hasher.combine(y)
-    }
-}
-
-extension CGSize: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(width)
-        hasher.combine(height)
-    }
-}
-
-struct Stroke: Hashable {
-    var points: [StrokePoint]
-    
-    var path: PKStrokePath {
-        let pkStrokePoints = points.map {
-            PKStrokePoint(
-                location: $0.location,
-                timeOffset: $0.timeOffset,
-                size: .zero,
-                opacity: $0.opacity,
-                force: $0.force,
-                azimuth: $0.azimuth,
-                altitude: $0.altitude
-            )
-        }
-        return PKStrokePath(controlPoints: pkStrokePoints, creationDate: Date())
-    }
-}
 
 /// Represent a non-generic dataset of strokes and labels.
 /// Multi-stroke
 struct Dataset: Identifiable {
     let id = UUID()
     /// Name of the dataset
-    let name: String
+    var name: String
     /// Dictionary of label: [stroke]
     var data: [String: [Stroke]]
+    /// Date of creation
+    let createdAt = Date()
+    /// The final size of the canvas. Every stroke will be scaled down to fit from the original input (e.g. 512x512) to this value.
+    let canvasSize: CGSize = CGSize(width: 64, height: 64)
         
     var labels: [String] { Array(data.keys) }
     

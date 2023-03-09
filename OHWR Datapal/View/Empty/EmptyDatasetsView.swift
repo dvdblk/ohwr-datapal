@@ -14,6 +14,7 @@ struct EmptyDatasetsView: View {
         VStack {
             Spacer()
             Text("You haven't created any datasets yet.")
+                .font(.title3)
                 .padding(.top, 40)
             Button {
                 isPresentingNewDatasetView = true

@@ -55,9 +55,9 @@ struct ContentView_Previews: PreviewProvider {
         NavigationSplitView {
             DatasetListView(datasets: .constant(Dataset.sampleData), selectedDatasetId: $selectedDatasetId, isPresentingNewDatasetView: .constant(false))
         } content: {
-            DatasetDetailView(dataset: .constant(Dataset.sampleData[0]))
+            DatasetDetailView(dataset: .constant(Dataset.sampleData[0]), selectedLabelId: .constant(nil))
         } detail: {
-            SampleCreationView()
+            SampleCreationView(label: "circle", dataset: .constant(Dataset.sampleData[0]), splitViewColumnVisibility: .constant(.automatic))
         }
             .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (4th generation)"))
             .previewDisplayName("iPad Landscape")
