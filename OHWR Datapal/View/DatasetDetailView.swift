@@ -15,6 +15,7 @@ private struct DatasetDetailContentView: View {
     @Binding var dataset: Dataset
     /// Currently selected label of this dataset
     @Binding var selectedLabelId: String?
+    private let onDeleteAction: (() -> Void)
     /// Newly created label name
     @State private var newLabelName = ""
     @State private var exportFormat: DatasetFileFormat = .json
@@ -29,6 +30,12 @@ private struct DatasetDetailContentView: View {
     
     var isEditing: Bool {
         editMode?.wrappedValue.isEditing == true
+    }
+    
+    init(dataset: Binding<Dataset>, selectedLabelId: Binding<String?>, onDeleteAction: @escaping () -> Void) {
+        self._dataset = dataset
+        self._selectedLabelId = selectedLabelId
+        self.onDeleteAction = onDeleteAction
     }
     
     @ViewBuilder
@@ -160,7 +167,9 @@ private struct DatasetDetailContentView: View {
                 }
                 if isEditing {
                     Button {
-                        // TODO: delete dataset
+                        onDeleteAction()
+                        // stop edit mode after
+                        editMode?.wrappedValue = .inactive
                     } label: {
                         Text("Delete dataset")
                             .foregroundColor(.red)
@@ -204,9 +213,11 @@ struct DatasetDetailView: View {
     /// Used to correctly identify selected labels from section 2
     @State private var heterogeneousSelection: String?
     
+    let onDeleteAction: (() -> Void)
+    
     var body: some View {
         List(selection: $selectedLabelId) {
-            DatasetDetailContentView(dataset: $dataset, selectedLabelId: $selectedLabelId)
+            DatasetDetailContentView(dataset: $dataset, selectedLabelId: $selectedLabelId, onDeleteAction: onDeleteAction)
         }
         .listStyle(.insetGrouped)
         .navigationBarTitleDisplayMode(.automatic)
@@ -228,7 +239,7 @@ struct DatasetDetailView: View {
 struct DatasetDetailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            DatasetDetailView(dataset: .constant(Dataset.sampleData[0]), selectedLabelId: .constant(nil))
+            DatasetDetailView(dataset: .constant(Dataset.sampleData[0]), selectedLabelId: .constant(nil), onDeleteAction: {})
         }
     }
 }

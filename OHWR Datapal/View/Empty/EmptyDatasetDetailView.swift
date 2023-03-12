@@ -12,11 +12,10 @@ struct EmptyDatasetDetailView: View {
         VStack(spacing: 24) {
             Spacer()
             Image(systemName: "pencil.and.outline")
-                .resizable()
-                .frame(width: 64, height: 64)
+                .font(.system(size: 60))
                 .foregroundColor(Color(uiColor: .secondarySystemFill))
-            Text("Select a label")
-                .font(.title2)
+            Text("Select a label to add new samples")
+                .font(.title3)
             Spacer()
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)

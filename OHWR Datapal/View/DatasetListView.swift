@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct DatasetListView: View {
-    
     @Binding var datasets: [Dataset]
     // Use selection ID instead of dataset to avoid Hashable conformance
     @Binding var selectedDatasetId: UUID?
@@ -56,7 +55,7 @@ struct ContentView_Previews: PreviewProvider {
         NavigationSplitView {
             DatasetListView(datasets: .constant(Dataset.sampleData), selectedDatasetId: $selectedDatasetId, isPresentingNewDatasetView: .constant(false))
         } content: {
-            DatasetDetailView(dataset: .constant(Dataset.sampleData[0]), selectedLabelId: .constant(nil))
+            DatasetDetailView(dataset: .constant(Dataset.sampleData[0]), selectedLabelId: .constant(nil), onDeleteAction: {})
         } detail: {
             SampleCreationView(label: "circle", dataset: .constant(Dataset.sampleData[0]), splitViewColumnVisibility: .constant(.automatic))
         }

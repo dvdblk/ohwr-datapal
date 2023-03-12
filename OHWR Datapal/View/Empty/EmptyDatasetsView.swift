@@ -13,8 +13,8 @@ struct EmptyDatasetsView: View {
     var body: some View {
         VStack {
             Spacer()
-            Text("You haven't created any datasets yet.")
-                .font(.title3)
+            Text("You haven't created any datasets.")
+                .font(.headline)
                 .padding(.top, 40)
             Button {
                 isPresentingNewDatasetView = true
@@ -25,7 +25,7 @@ struct EmptyDatasetsView: View {
                 .buttonStyle(.borderedProminent)
             Spacer()
         }
-        .ignoresSafeArea(.keyboard, edges: .bottom)
+        .ignoresSafeArea(.keyboard, edges: [.bottom, .top])
     }
 }
 

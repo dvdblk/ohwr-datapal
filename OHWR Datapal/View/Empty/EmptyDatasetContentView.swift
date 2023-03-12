@@ -12,11 +12,10 @@ struct EmptyDatasetContentView: View {
         VStack(spacing: 24) {
             Spacer()
             Image(systemName: "doc.on.doc")
-                .resizable()
-                .frame(width: 64, height: 64)
+                .font(.system(size: 60))
                 .foregroundColor(Color(uiColor: .secondarySystemFill))
             Text("Select a dataset")
-                .font(.title)
+                .font(.title2)
             Spacer()
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
