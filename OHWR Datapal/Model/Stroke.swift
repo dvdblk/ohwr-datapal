@@ -8,30 +8,6 @@
 import Foundation
 import PencilKit
 
-struct StrokePoint: Hashable {
-    let location: CGPoint
-    let timeOffset: TimeInterval
-    //let size: CGSize
-    let opacity: CGFloat
-    let force: CGFloat
-    let azimuth: CGFloat
-    let altitude: CGFloat
-}
-
-extension CGPoint: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(x)
-        hasher.combine(y)
-    }
-}
-
-extension CGSize: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(width)
-        hasher.combine(height)
-    }
-}
-
 struct Stroke: Hashable {
     var points: [StrokePoint]
     
@@ -48,5 +24,26 @@ struct Stroke: Hashable {
             )
         }
         return PKStrokePath(controlPoints: pkStrokePoints, creationDate: Date())
+    }
+    
+    init(points: [StrokePoint] = []) {
+        self.points = points
+    }
+    
+    init(pkStroke: PKStroke) {
+        var points = [StrokePoint]()
+        for point in pkStroke.path {
+            points.append(
+                StrokePoint(
+                    location: point.location,
+                    timeOffset: point.timeOffset,
+                    opacity: point.opacity,
+                    force: point.force,
+                    azimuth: point.azimuth,
+                    altitude: point.altitude
+                )
+            )
+        }
+        self.init(points: points)
     }
 }

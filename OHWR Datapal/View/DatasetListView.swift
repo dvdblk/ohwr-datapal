@@ -28,7 +28,8 @@ struct DatasetListView: View {
             }
             
             Divider()
-            Text("🌟 this app on [GitHub](https://github.com/dvdblk/ohwr-datapal)")
+            Text("🌟 View this app on [GitHub](https://github.com/dvdblk/ohwr-datapal)")
+                .font(.callout)
                 .padding()
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
