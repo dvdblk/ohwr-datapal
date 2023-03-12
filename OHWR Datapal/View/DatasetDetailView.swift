@@ -18,6 +18,14 @@ private struct DatasetDetailContentView: View {
     /// Newly created label name
     @State private var newLabelName = ""
     @State private var exportFormat: DatasetFileFormat = .json
+    @State private var squigglePathPercentage: CGFloat = .zero
+    
+    private static let squiggleAnimationDuration: TimeInterval = 4
+    
+    var outputCanvasChoices: [Int] {
+        let multiples64 = (1..<9).map({ $0 * 64 })
+        return [28, 32, 50] + multiples64
+    }
     
     var isEditing: Bool {
         editMode?.wrappedValue.isEditing == true
@@ -70,10 +78,34 @@ private struct DatasetDetailContentView: View {
         Group {
             Section {
                 HStack {
-                    Image(systemName: "square")
-                        .resizable()
-                        .frame(width: 76, height: 76)
-                        .foregroundColor(.accentColor)
+                    ZStack(alignment: .leading) {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color(uiColor: .systemBackground))
+                            .frame(width: 76, height: 76)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color(uiColor: .systemBackground))
+                                    .defaultShadow()
+                            )
+                        SquiggleShape()
+                            .trim(from: 0, to: squigglePathPercentage)
+                            .stroke(Color(uiColor: UIColor.label), lineWidth: 4)
+                            .onAppear {
+                                withAnimation(.easeInOut(duration: Self.squiggleAnimationDuration)) {
+                                    squigglePathPercentage = 1
+                                }
+                            }
+                            .onTapGesture {
+                                squigglePathPercentage = .zero
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                                    withAnimation(.easeInOut(duration: Self.squiggleAnimationDuration)) {
+                                        squigglePathPercentage = 1
+                                    }
+                                }
+                            }
+                    }
+                    Spacer()
+                        .layoutPriority(1)
                     Grid(horizontalSpacing: 16, verticalSpacing: 16) {
                         GridRow(alignment: .firstTextBaseline) {
                             HStack {
@@ -97,7 +129,7 @@ private struct DatasetDetailContentView: View {
                                 .foregroundColor(.secondary)
                                 .font(.callout)
                         }
-                    }
+                    }.layoutPriority(2)
                 }
                 .minimumScaleFactor(0.78)
                 .lineLimit(1)
@@ -118,6 +150,13 @@ private struct DatasetDetailContentView: View {
                     }
                 } label: {
                     Label("Export format", systemImage: "doc.plaintext")
+                }
+                Picker(selection: $dataset.outputCanvasSize) {
+                    ForEach(outputCanvasChoices, id: \.self) { i in
+                        Text("\(i)x\(i)").tag(CGSize(width: i, height: i))
+                    }
+                } label: {
+                    Label("Output canvas size", systemImage: "square")
                 }
                 if isEditing {
                     Button {

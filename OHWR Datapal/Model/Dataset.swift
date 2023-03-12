@@ -20,8 +20,8 @@ struct Dataset: Identifiable {
     var data: DataType
     /// Date of creation
     let createdAt = Date()
-    /// The final size of the canvas. Every stroke will be scaled down to fit from the original input (e.g. 512x512) to this value.
-    var outputCanvasSize: CGSize = CGSize(width: 64, height: 64)
+    /// The final size of the canvas. Every stroke will be scaled down to fit from the original input (e.g. 256x256) to this value.
+    var outputCanvasSize: CGSize = CGSize(width: 256, height: 256)
         
     var labels: [String] { Array(data.keys) }
     

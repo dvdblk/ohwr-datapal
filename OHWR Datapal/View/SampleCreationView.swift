@@ -29,10 +29,6 @@ struct SampleCreationView: View {
     
     private let canvasBridge = PKCanvasBridge()
     
-    private var shadowColor: Color {
-        colorScheme == .light ? .gray.opacity(0.4) : .white.opacity(0.4)
-    }
-    
     @ViewBuilder
     var sampleDrawingView: some View {
         VStack(spacing: 8) {
@@ -47,7 +43,7 @@ struct SampleCreationView: View {
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .cornerRadius(8)
-            .shadow(color: shadowColor, radius: 4)
+            .defaultShadow()
             .aspectRatio(1, contentMode: .fit)
             .layoutPriority(10)
             Spacer().layoutPriority(1)
@@ -106,7 +102,7 @@ struct SampleCreationView: View {
                     .fill(Color(uiColor: .systemBackground))
             )
             .compositingGroup()
-            .shadow(color: shadowColor, radius: 4)
+            .defaultShadow()
         }
         .padding(.bottom, 8)
         .padding(.top, 8)
