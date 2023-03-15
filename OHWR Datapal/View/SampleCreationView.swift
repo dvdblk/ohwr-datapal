@@ -27,7 +27,10 @@ struct SampleCreationView: View {
     @State private var canvasSize = CanvasSize.fill
     @StateObject private var undoRedoObserver = UndoRedoObserver()
     
+    @State private var canvasCGSize: CGSize = .zero
+    
     private let canvasBridge = PKCanvasBridge()
+    private let drawingManager = DrawingManager.shared
     
     @ViewBuilder
     var sampleDrawingView: some View {
@@ -41,6 +44,7 @@ struct SampleCreationView: View {
                 limitToOneStroke: $limitToOneStroke,
                 strokes: $strokes
             )
+            .saveSize(in: $canvasCGSize)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .cornerRadius(8)
             .defaultShadow()
@@ -107,21 +111,35 @@ struct SampleCreationView: View {
         .padding(.bottom, 8)
         .padding(.top, 8)
     }
-
+    
     @ViewBuilder
     var existingSamplesView: some View {
         Group {
-            if let samples = dataset.data[label] {
-                List {
-                    ForEach(samples, id: \.self) {_ in
-                        Color.blue
-                    }
+            if let samples = dataset.data[label], !samples.isEmpty {
+                ScrollView {
+                    LazyVGrid(
+                        columns: [GridItem(.adaptive(minimum: 64, maximum: 128))],
+                        spacing: 8
+                    ) {
+                        ForEach(samples.reversed()) { sample in
+                            DrawingPreviewRow(drawing: sample)
+                                .frame(width: 64, height: 64)
+                                .contextMenu {
+                                    Button(role: .destructive, action: {
+                                        if let sampleIndexToRemove = samples.firstIndex(of: sample) {
+                                            dataset.data[label]?.remove(at: sampleIndexToRemove)
+                                        }
+                                    }, label: {
+                                        Label("Delete", systemImage: "trash")
+                                    })
+                                }
+                            }
+                    }.padding()
                 }
             } else {
                 Text("Add samples for this label by drawing")
             }
         }
-        .listStyle(.plain)
     }
         
     var body: some View {
@@ -190,6 +208,7 @@ struct SampleCreationView: View {
                 }
             }
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         .onAppear {
             undoRedoObserver.undoManager = undoManager
         }
@@ -204,7 +223,8 @@ struct SampleCreationView: View {
     }
     
     func saveDrawing() {
-        let drawing = Drawing(strokes: strokes, canvasSize: .zero)
+        print(canvasCGSize)
+        let drawing = Drawing(strokes: strokes, canvasSize: canvasCGSize)
         dataset.data[label]?.append(drawing)
         clearDrawing()
     }

@@ -20,6 +20,7 @@ private struct DatasetDetailContentView: View {
     @State private var newLabelName = ""
     @State private var exportFormat: DatasetFileFormat = .json
     @State private var squigglePathPercentage: CGFloat = .zero
+    @State private var isPresentingDelete = false
     
     private static let squiggleAnimationDuration: TimeInterval = 4
     
@@ -167,15 +168,22 @@ private struct DatasetDetailContentView: View {
                 }
                 if isEditing {
                     Button {
-                        onDeleteAction()
-                        // stop edit mode after
-                        editMode?.wrappedValue = .inactive
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                            isPresentingDelete = true
+                        }
                     } label: {
                         Text("Delete dataset")
                             .foregroundColor(.red)
                             .font(.headline.weight(.semibold))
                             .frame(maxWidth: .infinity, alignment: .center)
                     }
+                }
+            }
+            .confirmationDialog("Are you sure?", isPresented: $isPresentingDelete) {
+                Button("Delete", role: .destructive) {
+                    onDeleteAction()
+                    // stop edit mode after
+                    editMode?.wrappedValue = .inactive
                 }
             }
             .deleteDisabled(true)

@@ -40,8 +40,27 @@ struct Dataset: Identifiable {
 extension Dataset {
     static let sampleData: [Dataset] = [
         Dataset(name: "Squares and triangles", data: [
-            "square": [Drawing(strokes: [Stroke()], canvasSize: .zero)],
-            "triangle": [Drawing(strokes: [Stroke()], canvasSize: .zero)]
+            "square": [
+                Drawing(strokes: [
+                    Stroke(points: [
+                        StrokePoint(location: CGPoint(x: 64, y: 64)),
+                        StrokePoint(location: CGPoint(x: 64, y: 192)),
+                        StrokePoint(location: CGPoint(x: 192, y: 192)),
+                        StrokePoint(location: CGPoint(x: 192, y: 64)),
+                        StrokePoint(location: CGPoint(x: 64, y: 64))
+                    ])
+                ], canvasSize: CGSize(width: 256, height: 256))
+            ],
+            "triangle": [
+                Drawing(strokes: [
+                    Stroke(points: [
+                        StrokePoint(location: CGPoint(x: 128, y: 64)),
+                        StrokePoint(location: CGPoint(x: 64, y: 192)),
+                        StrokePoint(location: CGPoint(x: 192, y: 192)),
+                        StrokePoint(location: CGPoint(x: 128, y: 64)),
+                    ])
+                ], canvasSize: CGSize(width: 256, height: 256))
+            ]
         ]),
         Dataset(name: "Empty dataset", data: [:])
     ]

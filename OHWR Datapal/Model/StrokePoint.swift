@@ -16,4 +16,13 @@ struct StrokePoint: Hashable {
     let force: CGFloat
     let azimuth: CGFloat
     let altitude: CGFloat
+    
+    init(location: CGPoint, timeOffset: TimeInterval = 0, opacity: CGFloat = 1, force: CGFloat = 1, azimuth: CGFloat = 1, altitude: CGFloat = 1) {
+        self.location = location
+        self.timeOffset = timeOffset
+        self.opacity = opacity
+        self.force = force
+        self.azimuth = azimuth
+        self.altitude = altitude
+    }
 }

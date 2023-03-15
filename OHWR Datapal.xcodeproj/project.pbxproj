@@ -32,6 +32,10 @@
 		8994DB4D29BD4C23003A1EBA /* CanvasSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994DB4C29BD4C23003A1EBA /* CanvasSize.swift */; };
 		8994DB4F29BD849E003A1EBA /* AdaptiveShadowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994DB4E29BD849E003A1EBA /* AdaptiveShadowModifier.swift */; };
 		8994DB5129BD858A003A1EBA /* SquiggleShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994DB5029BD858A003A1EBA /* SquiggleShape.swift */; };
+		8994DB5629C1452C003A1EBA /* DrawingPreviewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994DB5529C1452C003A1EBA /* DrawingPreviewRow.swift */; };
+		8994DB5929C14991003A1EBA /* SizeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994DB5829C14991003A1EBA /* SizeCalculator.swift */; };
+		8994DB5B29C16889003A1EBA /* DrawingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994DB5A29C16889003A1EBA /* DrawingManager.swift */; };
+		8994DB5D29C1689C003A1EBA /* DrawingImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994DB5C29C1689C003A1EBA /* DrawingImageCache.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +65,10 @@
 		8994DB4C29BD4C23003A1EBA /* CanvasSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasSize.swift; sourceTree = "<group>"; };
 		8994DB4E29BD849E003A1EBA /* AdaptiveShadowModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveShadowModifier.swift; sourceTree = "<group>"; };
 		8994DB5029BD858A003A1EBA /* SquiggleShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquiggleShape.swift; sourceTree = "<group>"; };
+		8994DB5529C1452C003A1EBA /* DrawingPreviewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingPreviewRow.swift; sourceTree = "<group>"; };
+		8994DB5829C14991003A1EBA /* SizeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeCalculator.swift; sourceTree = "<group>"; };
+		8994DB5A29C16889003A1EBA /* DrawingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingManager.swift; sourceTree = "<group>"; };
+		8994DB5C29C1689C003A1EBA /* DrawingImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingImageCache.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,11 +126,11 @@
 				8905FC4529B75DB000EFA6EE /* DatasetListView.swift */,
 				8905FC5729B764E600EFA6EE /* DatasetDetailView.swift */,
 				8905FC5D29B780B900EFA6EE /* NewDatasetView.swift */,
-				8905FC5929B7651900EFA6EE /* DatasetRow.swift */,
 				8994DB3729BA0A36003A1EBA /* ColumnVisibilityBarButton.swift */,
 				8994DB3E29BA20EA003A1EBA /* PKCanvasRepresentation.swift */,
+				8994DB5729C148D1003A1EBA /* Modifier */,
+				8994DB5229C144AF003A1EBA /* Row */,
 				8994DB3B29BA0E44003A1EBA /* Empty */,
-				8994DB4E29BD849E003A1EBA /* AdaptiveShadowModifier.swift */,
 				8994DB5029BD858A003A1EBA /* SquiggleShape.swift */,
 			);
 			path = View;
@@ -134,11 +142,13 @@
 				8905FC5529B7626200EFA6EE /* Dataset.swift */,
 				8994DB3129B94E01003A1EBA /* DatasetFileFormat.swift */,
 				8905FC6229B7C5E200EFA6EE /* NewDatasetContext.swift */,
-				8994DB4A29BD1B4E003A1EBA /* Drawing.swift */,
 				8994DB3329BA07E1003A1EBA /* Stroke.swift */,
 				8994DB4629BD07A9003A1EBA /* StrokePoint.swift */,
 				8994DB4229BAC85B003A1EBA /* UndoRedoObserver.swift */,
 				8994DB4C29BD4C23003A1EBA /* CanvasSize.swift */,
+				8994DB4A29BD1B4E003A1EBA /* Drawing.swift */,
+				8994DB5A29C16889003A1EBA /* DrawingManager.swift */,
+				8994DB5C29C1689C003A1EBA /* DrawingImageCache.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -160,6 +170,24 @@
 				8994DB3C29BA0E90003A1EBA /* EmptyDatasetDetailView.swift */,
 			);
 			path = Empty;
+			sourceTree = "<group>";
+		};
+		8994DB5229C144AF003A1EBA /* Row */ = {
+			isa = PBXGroup;
+			children = (
+				8905FC5929B7651900EFA6EE /* DatasetRow.swift */,
+				8994DB5529C1452C003A1EBA /* DrawingPreviewRow.swift */,
+			);
+			path = Row;
+			sourceTree = "<group>";
+		};
+		8994DB5729C148D1003A1EBA /* Modifier */ = {
+			isa = PBXGroup;
+			children = (
+				8994DB4E29BD849E003A1EBA /* AdaptiveShadowModifier.swift */,
+				8994DB5829C14991003A1EBA /* SizeCalculator.swift */,
+			);
+			path = Modifier;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,6 +266,7 @@
 				8994DB3829BA0A36003A1EBA /* ColumnVisibilityBarButton.swift in Sources */,
 				8994DB4B29BD1B4E003A1EBA /* Drawing.swift in Sources */,
 				8994DB5129BD858A003A1EBA /* SquiggleShape.swift in Sources */,
+				8994DB5B29C16889003A1EBA /* DrawingManager.swift in Sources */,
 				8994DB4729BD07A9003A1EBA /* StrokePoint.swift in Sources */,
 				8994DB4F29BD849E003A1EBA /* AdaptiveShadowModifier.swift in Sources */,
 				8905FC6329B7C5E200EFA6EE /* NewDatasetContext.swift in Sources */,
@@ -245,6 +274,7 @@
 				8905FC5E29B780B900EFA6EE /* NewDatasetView.swift in Sources */,
 				8994DB3D29BA0E90003A1EBA /* EmptyDatasetDetailView.swift in Sources */,
 				8905FC5829B764E600EFA6EE /* DatasetDetailView.swift in Sources */,
+				8994DB5929C14991003A1EBA /* SizeCalculator.swift in Sources */,
 				8905FC6729B7FB6200EFA6EE /* UIDevice+Interface.swift in Sources */,
 				8994DB3229B94E01003A1EBA /* DatasetFileFormat.swift in Sources */,
 				8994DB3429BA07E1003A1EBA /* Stroke.swift in Sources */,
@@ -252,7 +282,9 @@
 				8994DB4D29BD4C23003A1EBA /* CanvasSize.swift in Sources */,
 				8905FC6029B7AA2B00EFA6EE /* SampleCreationView.swift in Sources */,
 				8994DB4929BD07C5003A1EBA /* CGPoint+Hashable.swift in Sources */,
+				8994DB5D29C1689C003A1EBA /* DrawingImageCache.swift in Sources */,
 				8905FC5629B7626200EFA6EE /* Dataset.swift in Sources */,
+				8994DB5629C1452C003A1EBA /* DrawingPreviewRow.swift in Sources */,
 				8905FC5A29B7651900EFA6EE /* DatasetRow.swift in Sources */,
 				8994DB3A29BA0E3E003A1EBA /* EmptyDatasetContentView.swift in Sources */,
 			);
