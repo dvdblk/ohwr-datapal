@@ -14,6 +14,7 @@ struct Drawing: Hashable, Identifiable {
     let strokes: [Stroke]
     /// The size of the canvas where this drawing was made
     let canvasSize: CGSize
+    let createdAt = Date()
     
     init(strokes: [Stroke], canvasSize: CGSize = .zero) {
         self.strokes = strokes
@@ -27,7 +28,8 @@ struct Drawing: Hashable, Identifiable {
         )
     }
     
-    // MARK: - Rasterization
+    // MARK: - CGImage Functions
+    /// Rasterize a drawing into a CGImage if possible
     func rasterized() -> CGImage? {
         let grayscale = CGColorSpaceCreateDeviceGray()
         let intermediate_bitmap_context = CGContext(

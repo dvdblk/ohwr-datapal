@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 /// Workaround for `@Environment(\.editMode)` not working in a single View
 /// https://developer.apple.com/forums/thread/716434
@@ -15,10 +16,11 @@ private struct DatasetDetailContentView: View {
     @Binding var dataset: Dataset
     /// Currently selected label of this dataset
     @Binding var selectedLabelId: String?
+    @Binding var exportFormat: DatasetFileFormat
+
     private let onDeleteAction: (() -> Void)
     /// Newly created label name
     @State private var newLabelName = ""
-    @State private var exportFormat: DatasetFileFormat = .json
     @State private var squigglePathPercentage: CGFloat = .zero
     @State private var isPresentingDelete = false
     
@@ -33,9 +35,10 @@ private struct DatasetDetailContentView: View {
         editMode?.wrappedValue.isEditing == true
     }
     
-    init(dataset: Binding<Dataset>, selectedLabelId: Binding<String?>, onDeleteAction: @escaping () -> Void) {
+    init(dataset: Binding<Dataset>, selectedLabelId: Binding<String?>, exportFormat: Binding<DatasetFileFormat>, onDeleteAction: @escaping () -> Void) {
         self._dataset = dataset
         self._selectedLabelId = selectedLabelId
+        self._exportFormat = exportFormat
         self.onDeleteAction = onDeleteAction
     }
     
@@ -220,12 +223,25 @@ struct DatasetDetailView: View {
     @Binding var selectedLabelId: String?
     /// Used to correctly identify selected labels from section 2
     @State private var heterogeneousSelection: String?
-    
+    @State private var exportFormat: DatasetFileFormat = .ndjson
+    @State private var isPresentingExporter = false
+
     let onDeleteAction: (() -> Void)
+    
+    var exportedDatasetDocument: some FileDocument {
+        switch exportFormat {
+        case .ndjson: return DatasetFileNDJSON(dataset: dataset)
+        }
+    }
     
     var body: some View {
         List(selection: $selectedLabelId) {
-            DatasetDetailContentView(dataset: $dataset, selectedLabelId: $selectedLabelId, onDeleteAction: onDeleteAction)
+            DatasetDetailContentView(
+                dataset: $dataset,
+                selectedLabelId: $selectedLabelId,
+                exportFormat: $exportFormat,
+                onDeleteAction: onDeleteAction
+            )
         }
         .listStyle(.insetGrouped)
         .navigationBarTitleDisplayMode(.automatic)
@@ -235,10 +251,23 @@ struct DatasetDetailView: View {
         .toolbar {
             ToolbarItem(placement: .automatic) {
                 Button {
-                    
+                    isPresentingExporter = true
                 } label: {
                     Image(systemName: "square.and.arrow.up")
                 }
+            }
+        }
+        .fileExporter(
+            isPresented: $isPresentingExporter,
+            document: exportedDatasetDocument,
+            contentType: UTType.json,
+            defaultFilename: "\(dataset.name.lowercased().replacingOccurrences(of: " ", with: "-"))"
+            
+        ) { result in
+            switch result {
+            case .success: break
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }

@@ -36,6 +36,7 @@
 		8994DB5929C14991003A1EBA /* SizeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994DB5829C14991003A1EBA /* SizeCalculator.swift */; };
 		8994DB5B29C16889003A1EBA /* DrawingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994DB5A29C16889003A1EBA /* DrawingManager.swift */; };
 		8994DB5D29C1689C003A1EBA /* DrawingImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994DB5C29C1689C003A1EBA /* DrawingImageCache.swift */; };
+		8994DB5F29C1691D003A1EBA /* DatasetFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994DB5E29C1691D003A1EBA /* DatasetFile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +70,7 @@
 		8994DB5829C14991003A1EBA /* SizeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeCalculator.swift; sourceTree = "<group>"; };
 		8994DB5A29C16889003A1EBA /* DrawingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingManager.swift; sourceTree = "<group>"; };
 		8994DB5C29C1689C003A1EBA /* DrawingImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingImageCache.swift; sourceTree = "<group>"; };
+		8994DB5E29C1691D003A1EBA /* DatasetFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatasetFile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 			children = (
 				8905FC5529B7626200EFA6EE /* Dataset.swift */,
 				8994DB3129B94E01003A1EBA /* DatasetFileFormat.swift */,
+				8994DB5E29C1691D003A1EBA /* DatasetFile.swift */,
 				8905FC6229B7C5E200EFA6EE /* NewDatasetContext.swift */,
 				8994DB3329BA07E1003A1EBA /* Stroke.swift */,
 				8994DB4629BD07A9003A1EBA /* StrokePoint.swift */,
@@ -278,6 +281,7 @@
 				8905FC6729B7FB6200EFA6EE /* UIDevice+Interface.swift in Sources */,
 				8994DB3229B94E01003A1EBA /* DatasetFileFormat.swift in Sources */,
 				8994DB3429BA07E1003A1EBA /* Stroke.swift in Sources */,
+				8994DB5F29C1691D003A1EBA /* DatasetFile.swift in Sources */,
 				8905FC4429B75DB000EFA6EE /* OHWR_DatapalApp.swift in Sources */,
 				8994DB4D29BD4C23003A1EBA /* CanvasSize.swift in Sources */,
 				8905FC6029B7AA2B00EFA6EE /* SampleCreationView.swift in Sources */,
@@ -418,7 +422,6 @@
 				DEVELOPMENT_TEAM = 6QH7E4QW2D;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -448,7 +451,6 @@
 				DEVELOPMENT_TEAM = 6QH7E4QW2D;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

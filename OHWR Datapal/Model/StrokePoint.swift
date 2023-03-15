@@ -10,8 +10,8 @@ import PencilKit
 
 struct StrokePoint: Hashable {
     let location: CGPoint
+    /// Time offset since the start of the stroke path in seconds.
     let timeOffset: TimeInterval
-    //let size: CGSize
     let opacity: CGFloat
     let force: CGFloat
     let azimuth: CGFloat

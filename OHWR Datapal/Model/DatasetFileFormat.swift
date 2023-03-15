@@ -9,7 +9,7 @@ import Foundation
 
 enum DatasetFileFormat: String, CaseIterable, Identifiable {
     /// Default json format
-    case json = "JSON"
+    case ndjson = "NDJSON"
     
     var id: DatasetFileFormat { self }
 }

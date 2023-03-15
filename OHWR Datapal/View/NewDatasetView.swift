@@ -65,7 +65,7 @@ struct NewDatasetView: View {
                 } header: {
                     Text("Data")
                 } footer: {
-                    Text("Importing data is optional. Format of the JSON data can be found [here](https://github.com/dvdblk/ohwr-datapal).")
+                    Text("Importing data is optional. Format of the JSON data can be found [here](https://github.com/googlecreativelab/quickdraw-dataset#the-raw-moderated-dataset).")
                 }
             }
         }
