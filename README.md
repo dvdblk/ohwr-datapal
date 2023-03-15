@@ -1,4 +1,4 @@
-# Online Handwriting Datapal
+# Online Handwriting Datapal (iOS)
 
 ![ipadpreview](preview/ipad-preview.jpg)
 
@@ -10,6 +10,7 @@ Create datasets for online (stroke-based) handwriting recognition / classificati
 * Preview and edit created samples
 * Single or multistroke samples supported
 * Choose the size of the input canvas
+* Written in SwiftUI
 
 ## JSON data format
 Format of the dataset is the [Google QuickDraw](https://github.com/googlecreativelab/quickdraw-dataset/blob/master/README.md#the-raw-moderated-dataset) `json` format.
