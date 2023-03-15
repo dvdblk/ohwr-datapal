@@ -223,14 +223,14 @@ struct DatasetDetailView: View {
     @Binding var selectedLabelId: String?
     /// Used to correctly identify selected labels from section 2
     @State private var heterogeneousSelection: String?
-    @State private var exportFormat: DatasetFileFormat = .ndjson
+    @State private var exportFormat: DatasetFileFormat = .quickDraw
     @State private var isPresentingExporter = false
 
     let onDeleteAction: (() -> Void)
     
     var exportedDatasetDocument: some FileDocument {
         switch exportFormat {
-        case .ndjson: return DatasetFileNDJSON(dataset: dataset)
+        case .quickDraw: return DatasetFileNDJSON(dataset: dataset)
         }
     }
     

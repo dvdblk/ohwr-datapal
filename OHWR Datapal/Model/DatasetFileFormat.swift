@@ -9,7 +9,7 @@ import Foundation
 
 enum DatasetFileFormat: String, CaseIterable, Identifiable {
     /// Default json format
-    case ndjson = "NDJSON"
+    case quickDraw = "QuickDraw"
     
     var id: DatasetFileFormat { self }
 }

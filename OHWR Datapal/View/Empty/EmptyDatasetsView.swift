@@ -25,7 +25,7 @@ struct EmptyDatasetsView: View {
                 .buttonStyle(.borderedProminent)
             Spacer()
         }
-        .ignoresSafeArea(.keyboard, edges: [.bottom, .top])
+        .ignoresSafeArea(.keyboard, edges: [.bottom])
     }
 }
 

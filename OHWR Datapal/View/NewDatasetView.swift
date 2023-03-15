@@ -11,20 +11,20 @@ import SwiftUI
 
 class DatasetFileManager {
     
-    func loadJSON(result: Result<[URL], Error>) {
+    func loadJSON(result: Result<[URL], Error>) -> Dataset.DataType? {
         do {
             guard
                 let selectedFileURL = try? result.get().first,
                 selectedFileURL.startAccessingSecurityScopedResource()
-            else { return }
+            else { return nil }
             let data = try Data(contentsOf: selectedFileURL)
-            let decoder = JSONDecoder()
-            
-            print(data)
+            guard let datasetData = DatasetFileNDJSON.datasetDataFrom(data: data) else { return nil }
             selectedFileURL.stopAccessingSecurityScopedResource()
+            return datasetData
         } catch {
             print(error)
         }
+        return nil
     }
 }
 
@@ -55,7 +55,9 @@ struct NewDatasetView: View {
                         allowedContentTypes: [.json],
                         allowsMultipleSelection: false
                     ) { result in
-                        DatasetFileManager().loadJSON(result: result)
+                        guard let importedDatasetData = DatasetFileManager().loadJSON(result: result) else { return }
+                        print(importedDatasetData)
+                        newDatasetContext.datasetData.data = importedDatasetData
                     }
                     if !newDatasetContext.datasetData.data.isEmpty {
                         List(labels, id: \.self) { label in

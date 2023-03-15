@@ -16,12 +16,14 @@ struct DatasetListView: View {
     @ViewBuilder
     var listView: some View {
         VStack(spacing: 0) {
-            if datasets.isEmpty {
-                EmptyDatasetsView(isPresentingNewDatasetView: $isPresentingNewDatasetView)
-            } else {
-                List(selection: $selectedDatasetId) {
-                    ForEach($datasets.sorted(by: { $0.wrappedValue.name < $1.wrappedValue.name })) { $dataset in
-                        DatasetRow(dataset: dataset).tag(dataset.id)
+            Group {
+                if datasets.isEmpty {
+                    EmptyDatasetsView(isPresentingNewDatasetView: $isPresentingNewDatasetView)
+                } else {
+                    List(selection: $selectedDatasetId) {
+                        ForEach($datasets.sorted(by: { $0.wrappedValue.name < $1.wrappedValue.name })) { $dataset in
+                            DatasetRow(dataset: dataset).tag(dataset.id)
+                        }
                     }
                 }
             }

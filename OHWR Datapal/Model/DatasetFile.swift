@@ -29,17 +29,54 @@ struct DatasetFileNDJSON: FileDocument {
         static let defaultCountryCode = "CH"
     }
     
+    static func datasetDataFrom(data: Data) -> Dataset.DataType? {
+        guard let jsonData = try? JSONDecoder().decode([QuickDrawNDJSONObject].self, from: data) else { return nil }
+        var datasetData: Dataset.DataType = [:]
+        var maxPointLocationValue: CGFloat = 0
+        for row in jsonData {
+            var strokes = [Stroke]()
+            for stroke in row.drawing {
+                var points = [StrokePoint]()
+                for (i, x) in stroke[0].enumerated() {
+                    let cgX = CGFloat(x)
+                    let y = CGFloat(stroke[1][i])
+                    let t = TimeInterval(stroke[2][i])
+                    if cgX > maxPointLocationValue {
+                        maxPointLocationValue = cgX
+                    }
+                    if y > maxPointLocationValue {
+                        maxPointLocationValue = y
+                    }
+                    points.append(
+                        StrokePoint(location: CGPoint(x: cgX, y: y), timeOffset: t)
+                    )
+                }
+                strokes.append(Stroke(points: points))
+            }
+            let closestSquareWidth = ceil(maxPointLocationValue / 128) * 128
+            let newDrawing = Drawing(strokes: strokes, canvasSize: CGSize(width: closestSquareWidth, height: closestSquareWidth))
+            if var existingLabelData = datasetData[row.word] {
+                existingLabelData.append(newDrawing)
+            } else {
+                datasetData[row.word] = [newDrawing]
+            }
+        }
+        
+        return datasetData
+    }
+    
     
     init(dataset: Dataset) {
         self.dataset = dataset
     }
     
     init(configuration: ReadConfiguration) throws {
-        guard let data = configuration.file.regularFileContents else {
+        guard let data = configuration.file.regularFileContents,
+              let datasetData = DatasetFileNDJSON.datasetDataFrom(data: data) else {
             throw CocoaError(.fileReadCorruptFile)
         }
-        // TODO: importing
-        dataset = Dataset(name: configuration.file.filename ?? UUID().uuidString, data: [:])
+       
+        self.dataset = Dataset(name: configuration.file.filename ?? UUID().uuidString, data: datasetData)
     }
     
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
