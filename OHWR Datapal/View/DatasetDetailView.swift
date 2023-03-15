@@ -26,11 +26,6 @@ private struct DatasetDetailContentView: View {
     
     private static let squiggleAnimationDuration: TimeInterval = 4
     
-    var outputCanvasChoices: [Int] {
-        let multiples64 = (1..<9).map({ $0 * 64 })
-        return [28, 32, 50] + multiples64
-    }
-    
     var isEditing: Bool {
         editMode?.wrappedValue.isEditing == true
     }
@@ -161,13 +156,6 @@ private struct DatasetDetailContentView: View {
                     }
                 } label: {
                     Label("Export format", systemImage: "doc.plaintext")
-                }
-                Picker(selection: $dataset.outputCanvasSize) {
-                    ForEach(outputCanvasChoices, id: \.self) { i in
-                        Text("\(i)x\(i)").tag(CGSize(width: i, height: i))
-                    }
-                } label: {
-                    Label("Output canvas size", systemImage: "square")
                 }
                 if isEditing {
                     Button {

@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 /// https://github.com/googlecreativelab/quickdraw-dataset#the-raw-moderated-dataset
 struct DatasetFileNDJSON: FileDocument {
     static var readableContentTypes = [UTType.json]
-
+    
     var dataset: Dataset
     
     private struct QuickDrawNDJSONObject: Codable {
@@ -65,6 +65,21 @@ struct DatasetFileNDJSON: FileDocument {
         return datasetData
     }
     
+    static func loadDatasetDataFromLocalFile(result: Result<[URL], Error>) -> Dataset.DataType? {
+        do {
+            guard
+                let selectedFileURL = try? result.get().first,
+                selectedFileURL.startAccessingSecurityScopedResource()
+            else { return nil }
+            let data = try Data(contentsOf: selectedFileURL)
+            guard let datasetData = DatasetFileNDJSON.datasetDataFrom(data: data) else { return nil }
+            selectedFileURL.stopAccessingSecurityScopedResource()
+            return datasetData
+        } catch {
+            print(error)
+        }
+        return nil
+    }
     
     init(dataset: Dataset) {
         self.dataset = dataset

@@ -7,27 +7,6 @@
 
 import SwiftUI
 
-
-
-class DatasetFileManager {
-    
-    func loadJSON(result: Result<[URL], Error>) -> Dataset.DataType? {
-        do {
-            guard
-                let selectedFileURL = try? result.get().first,
-                selectedFileURL.startAccessingSecurityScopedResource()
-            else { return nil }
-            let data = try Data(contentsOf: selectedFileURL)
-            guard let datasetData = DatasetFileNDJSON.datasetDataFrom(data: data) else { return nil }
-            selectedFileURL.stopAccessingSecurityScopedResource()
-            return datasetData
-        } catch {
-            print(error)
-        }
-        return nil
-    }
-}
-
 struct NewDatasetView: View {
     @ObservedObject var newDatasetContext: NewDatasetContext
     @FocusState private var isNameFocused: Bool
@@ -55,19 +34,28 @@ struct NewDatasetView: View {
                         allowedContentTypes: [.json],
                         allowsMultipleSelection: false
                     ) { result in
-                        guard let importedDatasetData = DatasetFileManager().loadJSON(result: result) else { return }
+                        guard let importedDatasetData = DatasetFileNDJSON.loadDatasetDataFromLocalFile(result: result) else { return }
                         print(importedDatasetData)
                         newDatasetContext.datasetData.data = importedDatasetData
                     }
                     if !newDatasetContext.datasetData.data.isEmpty {
                         List(labels, id: \.self) { label in
-                            Text(label)
+                            HStack {
+                                Text(label)
+                                Spacer()
+                                Text("\(newDatasetContext.datasetData.data[label]?.count.formatted() ?? "0")")
+                                    .foregroundStyle(.secondary)
+                            }
                         }
                     }
                 } header: {
                     Text("Data")
                 } footer: {
-                    Text("Importing data is optional. Format of the JSON data can be found [here](https://github.com/googlecreativelab/quickdraw-dataset#the-raw-moderated-dataset).")
+                    if !newDatasetContext.datasetData.data.isEmpty {
+                        Text("Loaded dataset data from file.")
+                    } else {
+                        Text("Importing data is optional. Format of the JSON data can be found [here](https://github.com/googlecreativelab/quickdraw-dataset#the-raw-moderated-dataset).")
+                    }
                 }
             }
         }
