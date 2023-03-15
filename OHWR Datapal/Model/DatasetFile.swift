@@ -48,7 +48,7 @@ struct DatasetFileNDJSON: FileDocument {
                         maxPointLocationValue = y
                     }
                     points.append(
-                        StrokePoint(location: CGPoint(x: cgX, y: y), timeOffset: t)
+                        StrokePoint(location: CGPoint(x: cgX, y: y), timeOffset: t / 1000)
                     )
                 }
                 strokes.append(Stroke(points: points))
@@ -107,8 +107,8 @@ struct DatasetFileNDJSON: FileDocument {
                     for point in stroke.points {
                         quickdrawStrokeX.append(Int(point.location.x))
                         quickdrawStrokeY.append(Int(point.location.y))
-                        // FIXME: timeOffset is in seconds but should be milliseconds
-                        quickdrawStrokeT.append(Int(point.timeOffset))
+                        // the time offset of QuickDraw is in milliseconds
+                        quickdrawStrokeT.append(Int(point.timeOffset * 1000))
                     }
                     
                     if !quickdrawStrokeX.isEmpty {

@@ -13,9 +13,7 @@ struct OHWR_DatapalApp: App {
     
     // MARK: - Data
     /// The array of datasets
-    // FIXME:
-    //@State private var datasets = [Dataset]()
-    @State private var datasets = Dataset.sampleData
+    @State private var datasets = [Dataset]()
     /// Currently selected dataset
     @State private var selectedDatasetId: UUID? = nil
     /// Track previously selected dataset ID to seamlessly transition to previous dataset when scenePhase changes

@@ -35,7 +35,6 @@ struct NewDatasetView: View {
                         allowsMultipleSelection: false
                     ) { result in
                         guard let importedDatasetData = DatasetFileNDJSON.loadDatasetDataFromLocalFile(result: result) else { return }
-                        print(importedDatasetData)
                         newDatasetContext.datasetData.data = importedDatasetData
                     }
                     if !newDatasetContext.datasetData.data.isEmpty {

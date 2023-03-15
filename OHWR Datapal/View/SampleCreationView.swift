@@ -223,7 +223,6 @@ struct SampleCreationView: View {
     }
     
     func saveDrawing() {
-        print(canvasCGSize)
         let drawing = Drawing(strokes: strokes, canvasSize: canvasCGSize)
         dataset.data[label]?.append(drawing)
         clearDrawing()
