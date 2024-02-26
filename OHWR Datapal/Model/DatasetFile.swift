@@ -21,7 +21,7 @@ struct DatasetFileNDJSON: FileDocument {
         let word: String
         /// Always CH on output
         let countrycode: String
-        let timestamp: Date
+        let timestamp: Double
         /// - Note: Always `true` while exporting.
         let recognized: Bool
         let drawing: [[[Int]]]
@@ -124,7 +124,7 @@ struct DatasetFileNDJSON: FileDocument {
                         key_id: drawing.id.uuidString,
                         word: label,
                         countrycode: QuickDrawNDJSONObject.defaultCountryCode,
-                        timestamp: drawing.createdAt,
+                        timestamp: drawing.createdAt.timeIntervalSince1970,
                         // Assume all drawings made in the app are recognized.
                         recognized: true,
                         drawing: quickdrawDrawing
