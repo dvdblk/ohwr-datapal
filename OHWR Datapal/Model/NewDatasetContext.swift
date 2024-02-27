@@ -14,7 +14,7 @@ class NewDatasetContext: ObservableObject {
     }
     
     var dataset: Dataset {
-        return Dataset(name: datasetData.name, data: datasetData.data)
+        return Dataset(name: datasetData.name, data: datasetData.data, outputCanvasSize: datasetData.outputSize)
     }
     
     init(data: Dataset.Data = Dataset.Data()) {

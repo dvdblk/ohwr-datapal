@@ -7,6 +7,16 @@
 
 import Foundation
 
+enum AllowedOutputSizes: Int, CaseIterable, Identifiable {
+    case small = 64
+    case medium = 128
+    case large = 256
+    
+    var id: AllowedOutputSizes {
+        return self
+    }
+}
+
 /// Represent a non-generic dataset of strokes and labels.
 /// Multi-stroke
 struct Dataset: Identifiable {
@@ -20,12 +30,15 @@ struct Dataset: Identifiable {
     var data: DataType
     /// Date of creation
     let createdAt = Date()
+    /// The final width and height of the samples (downscaled or upscaled from original canvas size)
+    let outputCanvasSize: Double
         
     var labels: [String] { Array(data.keys) }
     
     struct Data {
         var name: String = ""
         var data: DataType = [:]
+        var outputSize: Double = 256
         
         var isValidName: Bool {
             return
@@ -59,7 +72,7 @@ extension Dataset {
                     ])
                 ], canvasSize: CGSize(width: 256, height: 256))
             ]
-        ]),
-        Dataset(name: "Empty dataset", data: [:])
+        ], outputCanvasSize: 256),
+        Dataset(name: "Empty dataset", data: [:], outputCanvasSize: 64)
     ]
 }

@@ -19,9 +19,20 @@ struct NewDatasetView: View {
     var body: some View {
         VStack {
             Form {
-                Section("Dataset Metadata") {
+                Section {
                     TextField("Dataset name", text: $newDatasetContext.datasetData.name)
                         .focused($isNameFocused)
+                    Picker(selection: $newDatasetContext.datasetData.outputSize) {
+                        ForEach(AllowedOutputSizes.allCases) { format in
+                            Text("\(Int(format.rawValue))x\(Int(format.rawValue))").tag(Double(format.rawValue))
+                        }
+                    } label: {
+                        Label("Output size", systemImage: "square.dashed")
+                    }
+                } header: {
+                    Text("Dataset Metadata")
+                } footer: {
+                    Text("Output size will be used to downscale or upscale the shape drawings from canvas to ensure equal scaling across all samples. Cannot be changed after creating the dataset.")
                 }
                 Section {
                     Button {
@@ -60,7 +71,7 @@ struct NewDatasetView: View {
         }
         .navigationTitle("New dataset")
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 isNameFocused = true
             }
         }

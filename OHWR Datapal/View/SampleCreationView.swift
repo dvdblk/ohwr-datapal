@@ -217,6 +217,9 @@ struct SampleCreationView: View {
             // UndoManager can change during the lifecycle so we need to keep it updated in the observer
             undoRedoObserver.undoManager = newManager
         }
+        .onChange(of: canvasCGSize) { _ in
+            clearDrawing()
+        }
     }
     
     func clearDrawing() {

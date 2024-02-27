@@ -8,26 +8,39 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
+
+fileprivate struct QuickDrawNDJSONObject: Codable {
+    /// - Note: Google is using a 64bit integer for `key_id`. UUID is 128bit, thus uuidString is used here.
+    let key_id: String
+    let word: String
+    /// Always CH on output
+    let countrycode: String
+    let timestamp: Double
+    /// - Note: Always `true` while exporting.
+    let recognized: Bool
+    let drawing: [[[Double]]]
+    
+    static let defaultCountryCode = "CH"
+}
+
+fileprivate struct OutputFile: Encodable {
+        
+    /// Version of the dataset format
+    let formatVersion: String = "1.0"
+    /// Width or height of the canvas the strokes are scaled for
+    let imageWidthHeight: Double
+    /// Format e.g. quickdraw
+    let datasetFormat: String
+    /// The stroke objects
+    let data: [QuickDrawNDJSONObject]
+}
+
 /// Represents a Google QuickDraw NDJSON file.
 /// https://github.com/googlecreativelab/quickdraw-dataset#the-raw-moderated-dataset
 struct DatasetFileNDJSON: FileDocument {
     static var readableContentTypes = [UTType.json]
     
     var dataset: Dataset
-    
-    private struct QuickDrawNDJSONObject: Codable {
-        /// - Note: Google is using a 64bit integer for `key_id`. UUID is 128bit, thus uuidString is used here.
-        let key_id: String
-        let word: String
-        /// Always CH on output
-        let countrycode: String
-        let timestamp: Double
-        /// - Note: Always `true` while exporting.
-        let recognized: Bool
-        let drawing: [[[Int]]]
-        
-        static let defaultCountryCode = "CH"
-    }
     
     static func datasetDataFrom(data: Data) -> Dataset.DataType? {
         guard let jsonData = try? JSONDecoder().decode([QuickDrawNDJSONObject].self, from: data) else { return nil }
@@ -91,24 +104,32 @@ struct DatasetFileNDJSON: FileDocument {
             throw CocoaError(.fileReadCorruptFile)
         }
        
-        self.dataset = Dataset(name: configuration.file.filename ?? UUID().uuidString, data: datasetData)
+        // FIXME: 64 to selectable size
+        self.dataset = Dataset(name: configuration.file.filename ?? UUID().uuidString, data: datasetData, outputCanvasSize: 64)
     }
     
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
         var ndjsonArray = [QuickDrawNDJSONObject]()
+        let desiredSize = dataset.outputCanvasSize
+        
         for (label, drawings) in dataset.data {
             for drawing in drawings {
-                var quickdrawDrawing = [[[Int]]]()
+                var quickdrawDrawing = [[[Double]]]()
                 for stroke in drawing.strokes {
-                    var quickdrawStrokeX: [Int] = []
-                    var quickdrawStrokeY: [Int] = []
-                    var quickdrawStrokeT: [Int] = []
-                    
+                    var quickdrawStrokeX: [Double] = []
+                    var quickdrawStrokeY: [Double] = []
+                    var quickdrawStrokeT: [Double] = []
+            
                     for point in stroke.points {
-                        quickdrawStrokeX.append(Int(point.location.x))
-                        quickdrawStrokeY.append(Int(point.location.y))
+                        // scale with a simple linear transform
+                        let x = (point.location.x / drawing.canvasSize.width) * desiredSize
+                        let y = (point.location.y / drawing.canvasSize.height) * desiredSize
+                        
+                        quickdrawStrokeX.append(x)
+                        quickdrawStrokeY.append(y)
+                        
                         // the time offset of QuickDraw is in milliseconds
-                        quickdrawStrokeT.append(Int(point.timeOffset * 1000))
+                        quickdrawStrokeT.append(point.timeOffset * 1000)
                     }
                     
                     if !quickdrawStrokeX.isEmpty {
@@ -132,8 +153,8 @@ struct DatasetFileNDJSON: FileDocument {
                 )
             }
         }
-
-        let data = try JSONEncoder().encode(ndjsonArray)
+        let outputFile = OutputFile(imageWidthHeight: dataset.outputCanvasSize, datasetFormat: DatasetFileFormat.quickDraw.rawValue, data: ndjsonArray)
+        let data = try JSONEncoder().encode(outputFile)
         return FileWrapper(regularFileWithContents: data)
     }
 }

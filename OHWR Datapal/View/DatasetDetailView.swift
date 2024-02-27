@@ -150,6 +150,13 @@ private struct DatasetDetailContentView: View {
                         .foregroundColor(.secondary)
                         .font(.callout)
                 }
+                HStack {
+                    Label("Output size", systemImage: "square.dashed")
+                    Spacer()
+                    Text("\(Int(dataset.outputCanvasSize))x\(Int(dataset.outputCanvasSize))")
+                        .foregroundColor(.secondary)
+                        .font(.callout)
+                }
                 Picker(selection: $exportFormat) {
                     ForEach(DatasetFileFormat.allCases) { format in
                         Text(format.rawValue).tag(format)
