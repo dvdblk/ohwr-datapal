@@ -24,7 +24,7 @@ struct SampleCreationView: View {
     /// Limit the sample creation drawing to one stroke
     @State private var limitToOneStroke = false
     @State private var drawWithTouch = !UIDevice.isPad
-    @State private var canvasSize = CanvasSize.fill
+    @State private var canvasSize = CanvasSize.large
     @StateObject private var undoRedoObserver = UndoRedoObserver()
     
     @State private var canvasCGSize: CGSize = .zero
@@ -34,8 +34,8 @@ struct SampleCreationView: View {
     
     @ViewBuilder
     var sampleDrawingView: some View {
-        VStack(spacing: 8) {
-            Spacer()
+        VStack(alignment: .center, spacing: 8) {
+            Spacer().layoutPriority(1)
             PKCanvasRepresentation(
                 canvasBridge: canvasBridge,
                 canUndo: $undoRedoObserver.canUndo,
@@ -45,12 +45,11 @@ struct SampleCreationView: View {
                 strokes: $strokes
             )
             .saveSize(in: $canvasCGSize)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .frame(maxWidth: canvasSize.exactPxSize, maxHeight: canvasSize.exactPxSize)
             .cornerRadius(8)
             .defaultShadow()
             .aspectRatio(1, contentMode: .fit)
             .layoutPriority(10)
-            Spacer().layoutPriority(1)
             HStack {
                 Button {
                     saveDrawing()
@@ -107,6 +106,8 @@ struct SampleCreationView: View {
             )
             .compositingGroup()
             .defaultShadow()
+            .offset(y: 16)
+            Spacer().layoutPriority(1)
         }
         .padding(.bottom, 8)
         .padding(.top, 8)
@@ -148,7 +149,7 @@ struct SampleCreationView: View {
                 Spacer()
                 sampleDrawingView
                     .frame(maxWidth: .infinity)
-                    .frame(maxHeight: geometry.size.height * (showsExistingSamples ? Self.defaultCanvasHeight : 1) * canvasSize.rawValue)
+                    .frame(maxHeight: geometry.size.height * (showsExistingSamples ? Self.defaultCanvasHeight : 1))
                     .padding(.leading)
                     .padding(.trailing)
                 Spacer()
